@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "interactive-video-labs-fastapi"
+version = "0.2.0"
+description = "FastAPI adapter for interactive-video-labs-core"
+authors = ["Taj <tajulislamj200@gmail.com>"]
+readme = "README.md"
+license = "MIT"
+homepage = "https://github.com/interactive-video-labs"
+repository = "https://github.com/interactive-video-labs/interactive-video-labs-fastapi"
+packages = [{ include = "interactive_video_labs_fastapi", from = "." }]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = ">=0.115"
+uvicorn = { version = ">=0.30", extras = ["standard"] }
+interactive-video-labs-core = ">=0.2.0"
+sqlalchemy = ">=2.0"
+aiosqlite = ">=0.20"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^9.0.0"
+pytest-asyncio = "^1.0.0"
+httpx = "^0.28.0"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
