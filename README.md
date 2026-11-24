@@ -1,4 +1,4 @@
-# interactive-video-labs-fastapi 0.2.0
+# interactive-video-labs-fastapi
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/interactive-video-labs/docs/main/logo.svg" width="200" alt="Interactive Video Labs Logo" />
@@ -16,6 +16,8 @@ This package exposes HTTP endpoints for saving interactive-video decisions, rest
 
 The core decision ledger is designed to complement [`@interactive-video-labs/core`](https://github.com/interactive-video-labs/interactive-video-core), the framework-agnostic TypeScript player used by interactive video applications.
 
+The core 0.3.0 live protocol is framework-agnostic. The wrapper does not add HTTP or WebSocket routing for room synchronization; applications can compose the core live event models and helpers with their own FastAPI WebSocket handlers.
+
 ---
 
 ## Features
@@ -28,6 +30,7 @@ The core decision ledger is designed to complement [`@interactive-video-labs/cor
 - **Async SQLAlchemy storage:** Use request-scoped async sessions and core SQLAlchemy models.
 - **Automatic startup setup:** Create the core database tables in the application lifespan.
 - **Framework composition:** Keep decision logic and persistence in the core package while the adapter handles HTTP concerns.
+- **Core 0.3 live compatibility:** Use the core protocol models and tally helpers alongside custom FastAPI WebSocket endpoints.
 
 ---
 
@@ -37,7 +40,7 @@ The core decision ledger is designed to complement [`@interactive-video-labs/cor
 - FastAPI 0.115 or newer
 - Pydantic 2.x
 - SQLAlchemy 2.x
-- `interactive-video-labs-core` 0.2.0 or newer
+- `interactive-video-labs-core` 0.3.0 or newer
 
 ---
 
@@ -210,6 +213,47 @@ Invalid response:
   "valid": false
 }
 ```
+
+---
+
+## Live Session Protocol
+
+Core 0.3.0 provides framework-agnostic live session events and room aggregation helpers. FastAPI applications can validate and dispatch those events in custom WebSocket handlers:
+
+```python
+from pydantic import TypeAdapter
+from interactive_video_backend_core.live import (
+    DecisionSubmittedEvent,
+    LiveSessionEvent,
+    handle_decision_submitted,
+)
+
+event = TypeAdapter(LiveSessionEvent).validate_json(message)
+
+if isinstance(event, DecisionSubmittedEvent):
+    updates = await handle_decision_submitted(
+        event,
+        repository,
+        previous_decisions=room_decisions,
+    )
+    await broadcast(updates.poll_tally.model_dump(mode="json"))
+    await broadcast(updates.analytics_updated.model_dump(mode="json"))
+```
+
+The protocol uses version `1` and the following discriminator types:
+
+| Event type | Purpose |
+| --- | --- |
+| `room:state` | Reconnect snapshot |
+| `playback:sync` | Shared playback position |
+| `cue:triggered` | Cue activation |
+| `node:entered` | Node activation |
+| `decision:submitted` | Viewer choice submission |
+| `poll:tally` | Node choice totals |
+| `analytics:updated` | Video decision totals |
+| `presence:update` | Viewer join or leave state |
+
+The core live module does not manage WebSocket connections or room ledgers. The host application must handle authentication, room membership, participant state, ledger loading, and broadcasting. Supply `previous_decisions` without the incoming submitted decision.
 
 ---
 
