@@ -1,3 +1,5 @@
+from importlib.metadata import version
+
 from fastapi.testclient import TestClient
 from pydantic import TypeAdapter
 
@@ -10,6 +12,8 @@ from interactive_video_backend_core.live import (
 
 def test_health():
     app = create_app("sqlite+aiosqlite:///:memory:")
+
+    assert app.version == version("interactive-video-labs-fastapi")
 
     with TestClient(app) as client:
         response = client.get("/health")

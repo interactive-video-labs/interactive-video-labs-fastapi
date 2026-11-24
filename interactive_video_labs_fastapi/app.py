@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager
 from collections.abc import AsyncIterator
+from importlib.metadata import version
 
 from fastapi import FastAPI
 from sqlalchemy.ext.asyncio import (
@@ -22,7 +23,7 @@ def create_app(
     session_factory = async_sessionmaker(engine, class_=AsyncSession)
     app = FastAPI(
         title="interactive-video-labs-fastapi",
-        version="0.3.0",
+        version=version("interactive-video-labs-fastapi"),
     )
     app.state.session_factory = session_factory
 

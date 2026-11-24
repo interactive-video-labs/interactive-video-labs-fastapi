@@ -1,5 +1,7 @@
 # Developer Guide
 
+<img src="https://img.shields.io/pypi/v/interactive-video-labs-fastapi" alt="Latest published version on PyPI" />
+
 This guide covers local setup, testing, and running the FastAPI adapter.
 
 ## Requirements
@@ -55,6 +57,9 @@ The workflows in `.github/workflows/` provide:
   release is published. Configure PyPI trusted publishing for this repository
   with the `pypi` environment. Manual dispatch also publishes the current
   project version.
+- `version-bump.yml`: manually bumps the version in `pyproject.toml`; the PyPI
+  version badges in this guide and the README reflect the latest published
+  release.
 - `renovate.yml`: runs Renovate weekly or on demand. Configure the repository
   secret `RENOVATE_TOKEN` with a token that can create dependency update PRs.
 

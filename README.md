@@ -1,4 +1,4 @@
-# interactive-video-labs-fastapi 0.3.0
+# interactive-video-labs-fastapi
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/interactive-video-labs/docs/main/logo.svg" width="200" alt="Interactive Video Labs Logo" />
