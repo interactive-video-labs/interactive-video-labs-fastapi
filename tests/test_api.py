@@ -1,6 +1,11 @@
 from fastapi.testclient import TestClient
+from pydantic import TypeAdapter
 
 from interactive_video_labs_fastapi import create_app
+from interactive_video_backend_core.live import (
+    LiveSessionEvent,
+    build_room_state,
+)
 
 
 def test_health():
@@ -63,3 +68,31 @@ def test_save_and_resume_decision():
     assert resumed.status_code == 200
     assert resumed.json()["last_node_id"] == "question-1"
     assert resumed.json()["last_timestamp"] == 12.5
+
+
+def test_core_live_protocol_is_available():
+    event = TypeAdapter(LiveSessionEvent).validate_python(
+        {
+            "type": "playback:sync",
+            "payload": {
+                "room_id": "room-1",
+                "video_id": "video-1",
+                "anchor_timestamp": 7.0,
+                "server_timestamp": "2026-11-23T00:00:00Z",
+                "playback_state": "paused",
+            },
+        }
+    )
+    snapshot = build_room_state(
+        room_id="room-1",
+        session_id="session-1",
+        video_id="video-1",
+        anchor_timestamp=7.0,
+        playback_state="paused",
+        participant_count=1,
+    )
+
+    assert event.type == "playback:sync"
+    assert event.version == 1
+    assert snapshot.type == "room:state"
+    assert snapshot.payload.total_decisions == 0

@@ -18,7 +18,7 @@ cd interactive-video-labs-fastapi
 poetry install
 ```
 
-The package depends on `interactive-video-labs-core` 0.2.0 or newer. If you are
+The package depends on `interactive-video-labs-core` 0.3.0 or newer. If you are
 developing against an unpublished core version, install the core package into
 the Poetry environment from its repository before working on this wrapper.
 
@@ -79,6 +79,9 @@ tests/
 - Keep business logic and persistence contracts in `interactive-video-labs-core`.
 - Use `AbstractSessionRepository` when adding alternate storage integrations.
 - Keep FastAPI-specific request handling and dependency wiring in this package.
+- The core 0.3.0 `live` module provides protocol version 1 Pydantic events and room/tally helpers. It is framework-agnostic and does not provide FastAPI or WebSocket connection management.
+- When implementing live synchronization, keep room membership, authentication, message broadcasting, and room ledger loading in the host FastAPI WebSocket handler. Pass decisions excluding the incoming event to `handle_decision_submitted()` as `previous_decisions`.
+- Live protocol changes belong in `interactive-video-labs-core`; add only framework integration and tests in this adapter.
 - Create database migrations through the consuming application's migration
   tooling for production deployments; automatic table creation is intended for
   this simple default setup.

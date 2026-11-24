@@ -22,7 +22,7 @@ def create_app(
     session_factory = async_sessionmaker(engine, class_=AsyncSession)
     app = FastAPI(
         title="interactive-video-labs-fastapi",
-        version="0.2.0",
+        version="0.3.0",
     )
     app.state.session_factory = session_factory
 
