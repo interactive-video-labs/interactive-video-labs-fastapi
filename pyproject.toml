@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "interactive-video-labs-fastapi"
-version = "0.2.0"
+version = "0.3.0"
 description = "FastAPI adapter for interactive-video-labs-core"
 authors = ["Taj <tajulislamj200@gmail.com>"]
 readme = "README.md"
