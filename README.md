@@ -354,7 +354,10 @@ interactive-video-labs-fastapi/
 
 ## Contributing
 
-Contributions are welcome. Please review [DEVELOPER.md](DEVELOPER.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) before submitting an issue or pull request.
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for
+development and pull request guidance, and review [DEVELOPER.md](DEVELOPER.md)
+and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) before submitting an issue or pull
+request.
 
 ---
 
