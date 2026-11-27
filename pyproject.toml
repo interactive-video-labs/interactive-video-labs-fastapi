@@ -20,7 +20,7 @@ aiosqlite = ">=0.20"
 [tool.poetry.group.dev.dependencies]
 pytest = "^9.0.0"
 pytest-asyncio = "^1.0.0"
-httpx = "^0.28.0"
+httpx = "^0.29.0"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
